@@ -8,7 +8,7 @@ from msilib.schema import EventMapping
 
 def CreateUsers():
     print('##### Create useers, passwords, and roles #####')
-    UserFile = open("Users.txtt", "a+")
+    UserFile = open("Users.txt", "a+")
     while True:
         username = GetUserName()
         if (username.upper() == "END"):
@@ -31,7 +31,7 @@ def GetUserPassword():
     return pwd
 
 def GetUserRole():
-    pwd = input("Enter role (Admin or User): ")
+    userrole = input("Enter role (Admin or User): ")
     while True:
         if(userrole.upper() == "ADMIN" or userrole.upper() == "USER"):
             return userrole
@@ -41,7 +41,7 @@ def GetUserRole():
 def printuserinfo():
     UserFile = open("Users.txt" , "r")
     while True:
-        UserDetail = UserFile.readLine()
+        UserDetail = UserFile.readline()
         if not UserDetail:
             break
         UserDetail = UserDetail.replace("\n", "")
@@ -51,12 +51,11 @@ def printuserinfo():
         userrole = UserList [2]
         print("User Name: ", username, "Passwoed: ", userpassword, "Role: ", userrole)
         
-########################################################################################################
 
 def Login():
     UserFile = open("Users.txt", "r")
     UserList = {}
-    UserName = input ("Enterr User Name: ")
+    UserName = input ("Enter User Name: ")
     UserPwd = input("Enter Password: ")
     UserRole = "None"
     while True:
@@ -68,9 +67,11 @@ def Login():
         UserList = UserDetail.split ("|")
         if UserName == UserList[0] and UserPwd == UserList [1]:
             UserRole = UserList [2] # user is valid , return role return UserROle, UserName
+            return UserRole, UserName
+        
+    return UserRole, UserName
             
-#####################################################################################################################
-
+            
 def GetEmpName():
     empname = input("Enter Employee name: ")
     return empname
@@ -117,6 +118,9 @@ def printinfo(DetailsPrinted):
             print()
             continue
     while True:
+        EmpDetail = EmpFile.readline()
+        if not EmpDetail:
+            break
         EmpDetail = EmpDetail.replace("\n", "")
         
         EmpList = EmpDetail.split("|")
@@ -178,7 +182,7 @@ if __name__ == "__main__":
                 hourlyrate = GetHourlyRate()
                 taxrate = GetTaxRate()
                 EmpDetail = fromdate + "|" + todate + "|" + empname + "|" + str(hours) + "|" + str(hourlyrate) + "|" + str(taxrate) + "\n"
-                EmpFile.rite(EmpDetail)
+                EmpFile.write(EmpDetail)
                 
             EmpFile.close()
         printinfo(DetailsPrinted)
